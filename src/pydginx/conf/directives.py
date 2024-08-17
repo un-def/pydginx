@@ -105,7 +105,7 @@ class DataClassDirective(Directive):
 
     def __init_subclass__(cls) -> None:
         super().__init_subclass__()
-        cls._transform(cls)  # pyright: ignore[reportUnusedCallResult]
+        cls._transform(cls)
 
 
 class Block(Context, Directive):
