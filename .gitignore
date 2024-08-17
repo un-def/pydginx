@@ -1,0 +1,9 @@
+.*
+!.gitignore
+!.editorconfig
+
+*.py[co]
+
+*.egg-info/
+build/
+dist/
