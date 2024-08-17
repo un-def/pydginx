@@ -1,19 +1,12 @@
 from __future__ import annotations
 
-import textwrap
 from collections.abc import Iterator
 
 import pytest
 
 from pydginx.bases import Renderable
 
-
-def dedent(text: str) -> str:
-    return textwrap.dedent(text.lstrip('\n'))
-
-
-def reindent(prefix: str, text: str) -> str:
-    return textwrap.indent(dedent(text), prefix)
+from tests.testlib import dedent, reindent
 
 
 class Node(Renderable):
