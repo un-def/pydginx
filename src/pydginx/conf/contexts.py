@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Self, final, overload
 from pydginx.bases import NonInstantiable, Renderable
 from pydginx.utils import instantiate
 
-from .exceptions import NotAllowedHere
+from .exceptions import Duplicate, NotAllowedHere
 
 
 if TYPE_CHECKING:
@@ -15,6 +15,10 @@ if TYPE_CHECKING:
 
 
 class Context:
+    _unique_directives: set[type[Directive]]
+
+    def __init__(self) -> None:
+        self._unique_directives = set()
 
     @property
     def directives(self) -> tuple[Directive, ...]:
@@ -70,6 +74,11 @@ class Context:
             cls = MainContext
         for directive in directives:
             directive = instantiate(directive)
+            if directive.unique:
+                directive_cls = type(directive)
+                if directive_cls in self._unique_directives:
+                    raise Duplicate(directive, self)
+                self._unique_directives.add(directive_cls)
             allowed_context = directive.allowed_context
             if allowed_context is AnyContext or cls in allowed_context:
                 self._directives.append(directive)

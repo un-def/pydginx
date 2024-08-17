@@ -4,6 +4,7 @@ import pytest
 
 from pydginx.conf.contexts import Context
 from pydginx.conf.directives import Directive
+from pydginx.conf.exceptions import Duplicate
 
 
 class SomeContext(Context):
@@ -89,3 +90,32 @@ def test_ilshift(context: SomeContext) -> None:
 
     assert len(context.directives) == 7
     assert all(isinstance(d, SomeDirective) for d in context.directives)
+
+
+def test_one_unique_directive(context: SomeContext) -> None:
+    class NotUniqueDirective(Directive):
+        context = SomeContext
+
+    class UniqueDirective(Directive):
+        context = SomeContext
+        unique = True
+
+    context <<= NotUniqueDirective
+    context <<= UniqueDirective
+    context <<= NotUniqueDirective()
+
+
+def test_two_same_unique_is_error(context: SomeContext) -> None:
+    class UniqueDirective1(Directive):
+        context = SomeContext
+        unique = True
+
+    class UniqueDirective2(Directive):
+        context = SomeContext
+        unique = True
+
+    context <<= UniqueDirective1
+    context <<= UniqueDirective2()
+
+    with pytest.raises(Duplicate, match=r'duplicate'):
+        context <<= UniqueDirective1()

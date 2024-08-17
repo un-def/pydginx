@@ -32,6 +32,7 @@ class Directive(Renderable, Representable):
     name: ClassVar[str]
     context: ClassVar[
         type[Context] | list[type[Context]] | tuple[type[Context], ...]] = ()
+    unique: ClassVar[bool] = False
 
     # computed automatically from context class variable
     allowed_context: ClassVar[frozenset[type[Context]] | type[AnyContext]]
@@ -111,6 +112,7 @@ class DataClassDirective(Directive):
 class Block(Context, Directive):
 
     def __init__(self, *directives: DirectiveType) -> None:
+        super().__init__()
         self.add_directives(directives)
 
     def render_iter(

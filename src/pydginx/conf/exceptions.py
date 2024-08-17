@@ -12,7 +12,7 @@ class ConfError(Exception):
     pass
 
 
-class NotAllowedHere(ConfError):
+class _ContextDirectiveError(ConfError):
     directive: Directive
     context: Context
 
@@ -20,7 +20,17 @@ class NotAllowedHere(ConfError):
         self.directive = directive
         self.context = context
 
+
+class NotAllowedHere(_ContextDirectiveError):
+
     def __str__(self) -> str:
         # nginx error example: "default_type" directive is not allowed
         # here in ./nginx.conf:4
         return f'{self.directive!r} is not allowed in {self.context!r}'
+
+
+class Duplicate(_ContextDirectiveError):
+
+    def __str__(self) -> str:
+        # ngix error example "directive is duplicate in nginx.conf:7
+        return f'{self.directive!r} is duplicate in {self.context!r}'
