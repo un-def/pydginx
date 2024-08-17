@@ -20,5 +20,5 @@ type:
 @test *args:
   pytest "${@}"
 
-example name:
+@example name:
   cd examples && python -m {{name}}

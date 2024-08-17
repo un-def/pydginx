@@ -1,8 +1,12 @@
 import shutil
+import signal
+import subprocess
+import tempfile
+from collections.abc import Iterator
+from contextlib import contextmanager
 from functools import cached_property
 from pathlib import Path
-from subprocess import Popen
-from tempfile import NamedTemporaryFile
+from types import FrameType
 
 from pydginx.conf.contexts import MainContext
 from pydginx.conf.literals import AUTO, OFF
@@ -29,6 +33,7 @@ class Conf(MainContext):
 
 
 class Nginx:
+    _process: subprocess.Popen[bytes] | None = None
 
     @cached_property
     def conf(self) -> Conf:
@@ -46,12 +51,27 @@ class Nginx:
         exec = self.executable
         if not exec:
             raise RuntimeError('nginx executable not found')
-        with NamedTemporaryFile(mode='wb', suffix='.nginx.conf') as conf_file:
-            conf_file.write(self.conf.render().encode())
-            conf_file.flush()
-            process = Popen([
-                exec, '-e', 'stderr', '-p', '.', '-c', conf_file.name])
+        signal.signal(signal.SIGINT, self.sigint_handler)
+        with self.tempdir() as tempdir:
+            conf_path = tempdir / 'nginx.conf'
+            with open(conf_path, 'wb') as conf_file:
+                conf_file.write(self.conf.render().encode())
+            process = subprocess.Popen([
+                exec, '-e', 'stderr', '-p', tempdir, '-c', conf_file.name])
+            self._process = process
             process.wait()
+
+    def sigint_handler(self, signum: int, frame: FrameType | None) -> None:
+        if self._process:
+            self._process.send_signal(signal.SIGQUIT)
+
+    @contextmanager
+    def tempdir(self) -> Iterator[Path]:
+        tmpdir = Path(tempfile.mkdtemp())
+        try:
+            yield tmpdir
+        finally:
+            shutil.rmtree(tmpdir)
 
 
 nginx = Nginx()
