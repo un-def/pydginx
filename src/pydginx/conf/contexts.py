@@ -4,7 +4,7 @@ from collections.abc import Iterable, Iterator
 from functools import cached_property
 from typing import TYPE_CHECKING, Self, final, overload
 
-from pydginx.bases import NonInstantiable, Renderable
+from pydginx.bases import NonInstantiable, Renderable, Representable
 from pydginx.utils import instantiate
 
 from .exceptions import Duplicate, NotAllowedHere
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from .directives import Directive, DirectiveType
 
 
-class Context:
+class Context(Representable):
     _unique_directives: set[type[Directive]]
 
     def __init__(self) -> None:

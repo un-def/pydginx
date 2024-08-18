@@ -32,7 +32,7 @@ class Directive(Renderable, Representable):
     name: ClassVar[str]
     context: ClassVar[
         type[Context] | list[type[Context]] | tuple[type[Context], ...]] = ()
-    unique: ClassVar[bool] = False
+    unique: ClassVar[bool] = True
 
     # computed automatically from context class variable
     allowed_context: ClassVar[frozenset[type[Context]] | type[AnyContext]]

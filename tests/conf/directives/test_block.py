@@ -11,6 +11,7 @@ class SomeBlock(Block):
 
 class SomeDirective(Directive):
     context = SomeBlock
+    unique = False
 
 
 @pytest.fixture

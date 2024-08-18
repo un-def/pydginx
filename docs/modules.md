@@ -6,26 +6,26 @@
 
 * [x] accept_mutex
 * [ ] accept_mutex_delay
-* [ ] daemon
+* [x] daemon
 * [ ] debug_connection
 * [ ] debug_points
 * [ ] env
 * [ ] error_log
-* [ ] events
+* [x] events
 * [ ] include
 * [ ] load_module
 * [ ] lock_file
 * [ ] master_process
 * [ ] multi_accept
 * [ ] pcre_jit
-* [ ] pid
+* [x] pid
 * [ ] ssl_engine
 * [ ] thread_pool
 * [ ] timer_resolution
 * [ ] use
 * [ ] user
 * [ ] worker_aio_requests
-* [ ] worker_connections
+* [x] worker_connections
 * [ ] worker_cpu_affinity
 * [ ] worker_priority
 * [ ] worker_processes

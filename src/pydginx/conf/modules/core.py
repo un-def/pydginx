@@ -13,7 +13,6 @@ class Events(Block):
 
 class AcceptMutex(SingleValueDataClassDirective[BoolType]):
     context = Events
-    unique = True
 
 
 class Daemon(SingleValueDataClassDirective[BoolType]):
