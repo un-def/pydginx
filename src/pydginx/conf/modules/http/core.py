@@ -10,3 +10,4 @@ class HTTP(Block):
 
 class Server(Block):
     context = HTTP
+    unique = False

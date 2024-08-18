@@ -62,7 +62,7 @@
   * [ ] disable_symlinks
   * [ ] error_page
   * [ ] etag
-  * [ ] http
+  * [x] http
   * [ ] if_modified_since
   * [ ] ignore_invalid_headers
   * [ ] internal
@@ -104,7 +104,7 @@
   * [ ] send_timeout
   * [ ] sendfile
   * [ ] sendfile_max_chunk
-  * [ ] server
+  * [x] server
   * [ ] server_name
   * [ ] server_name_in_redirect
   * [ ] server_names_hash_bucket_size
