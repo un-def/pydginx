@@ -1,10 +1,3 @@
-"""
-https://nginx.org/en/docs/http/ngx_http_log_module.html
-
-[ ] access_log
-[ ] log_format
-[ ] open_log_file_cache
-"""
 from __future__ import annotations
 
 from pathlib import Path
