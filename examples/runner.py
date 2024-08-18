@@ -52,10 +52,12 @@ class Nginx:
         if not exec:
             raise RuntimeError('nginx executable not found')
         signal.signal(signal.SIGINT, self.sigint_handler)
+        conf = self.conf.render()
+        print(conf)
         with self.tempdir() as tempdir:
             conf_path = tempdir / 'nginx.conf'
             with open(conf_path, 'wb') as conf_file:
-                conf_file.write(self.conf.render().encode())
+                conf_file.write(conf.encode())
             process = subprocess.Popen([
                 exec, '-e', 'stderr', '-p', tempdir, '-c', conf_file.name])
             self._process = process
