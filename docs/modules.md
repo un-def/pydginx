@@ -10,10 +10,10 @@
   * [x] daemon
   * [ ] debug_connection
   * [ ] debug_points
-  * [ ] env
+  * [x] env
   * [ ] error_log
   * [x] events
-  * [ ] include
+  * [x] include
   * [ ] load_module
   * [ ] lock_file
   * [ ] master_process

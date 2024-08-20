@@ -1,7 +1,3 @@
-from dataclasses import FrozenInstanceError
-
-import pytest
-
 from pydginx.conf.directives import DataClassDirective
 
 
@@ -14,5 +10,3 @@ def test() -> None:
 
     assert some_dir.foo == 3
     assert some_dir.bar == 'val'
-    with pytest.raises(FrozenInstanceError):
-        some_dir.foo = 5  # pyright: ignore[reportAttributeAccessIssue]

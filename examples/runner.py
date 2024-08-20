@@ -11,7 +11,7 @@ from types import FrameType
 from pydginx.conf.contexts import MainContext
 from pydginx.conf.literals import AUTO, OFF
 from pydginx.conf.modules.core import (
-    PID, Daemon, Events, WorkerConnections, WorkerProcesses,
+    PID, Daemon, Env, Events, WorkerConnections, WorkerProcesses,
 )
 from pydginx.conf.modules.http.core import HTTP, Server
 from pydginx.conf.modules.http.log import AccessLog
@@ -81,6 +81,8 @@ nginx.conf <<= [
     Daemon(OFF),
     PID('./nginx.pid'),
     WorkerProcesses(AUTO),
+    Env('TZ'),
+    Env('LC_ALL', 'C'),
 ]
 nginx.conf.events <<= WorkerConnections(100)
 nginx.conf.http <<= [

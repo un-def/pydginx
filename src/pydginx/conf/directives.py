@@ -16,10 +16,23 @@ from .literals import OFF, ON, LiteralEnum
 type ValueType = str | int | bool | LiteralEnum | Path
 
 
+def maybe_escape_string(string: str) -> str:
+    # TODO: implement
+    return string
+
+
 def render_value(value: ValueType) -> str:
     if isinstance(value, bool):
-        value = ON if value else OFF
-    return str(value)
+        return ON.value if value else OFF.value
+    if isinstance(value, int):
+        return str(value)
+    if isinstance(value, LiteralEnum):
+        return value.value
+    if isinstance(value, Path):
+        return maybe_escape_string(str(value))
+    if isinstance(value, str):   # pyright: ignore[reportUnnecessaryIsInstance]
+        return maybe_escape_string(value)
+    assert False, 'should not reach here'
 
 
 def is_directive(__obj_or_cls: Any, /) -> TypeGuard[DirectiveType]:
@@ -87,7 +100,7 @@ class SingletonDirective(Singleton, Directive):
     pass
 
 
-@dataclasses.dataclass(eq=False, frozen=True, repr=False, match_args=False)
+@dataclasses.dataclass(eq=False, repr=False, match_args=False)
 class SingleValueDataClassDirective[T: ValueType](Directive):
     value: T
 
@@ -97,12 +110,10 @@ class SingleValueDataClassDirective[T: ValueType](Directive):
         return render_value(self.value)
 
 
-@dataclass_transform(
-    kw_only_default=True, eq_default=False, frozen_default=True)
+@dataclass_transform(eq_default=False)
 class DataClassDirective(Directive):
     _transform: Final[Callable[[type[Directive]], type[Directive]]]
-    _transform = dataclasses.dataclass(
-        kw_only=True, eq=False, frozen=True, repr=False, match_args=False)
+    _transform = dataclasses.dataclass(eq=False, repr=False, match_args=False)
 
     def __init_subclass__(cls) -> None:
         super().__init_subclass__()
