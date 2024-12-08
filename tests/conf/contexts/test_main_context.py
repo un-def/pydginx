@@ -12,9 +12,8 @@ def context() -> MainContext:
 
 
 class SomeDirective(Directive):
-    name = 'some_directive'
-    context = MainContext
-    unique = False
+    pgx_context = MainContext
+    pgx_unique = False
 
 
 def test_render(context: MainContext) -> None:

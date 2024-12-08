@@ -5,9 +5,9 @@ from pydginx.conf.directives import Block
 
 
 class HTTP(Block):
-    context = MainContext
+    pgx_context = MainContext
 
 
 class Server(Block):
-    context = HTTP
-    unique = False
+    pgx_context = HTTP
+    pgx_unique = False

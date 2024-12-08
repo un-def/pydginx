@@ -10,8 +10,8 @@ class SomeBlock(Block):
 
 
 class SomeDirective(Directive):
-    context = SomeBlock
-    unique = False
+    pgx_context = SomeBlock
+    pgx_unique = False
 
 
 @pytest.fixture

@@ -10,8 +10,8 @@ def test_no_fields() -> None:
 
 def test_single_positional_field() -> None:
     class Cls(Representable):
-        repr_positional_fields = 'field'
         field: str
+        pgx_repr_pos = 'field'
 
     obj = Cls()
     obj.field = 'val'
@@ -21,10 +21,10 @@ def test_single_positional_field() -> None:
 
 def test_multiple_positional_fields() -> None:
     class Cls(Representable):
-        repr_positional_fields = ('field_1', 'field_3')
         field_1: int
         field_2: bool
         field_3: list[str]
+        pgx_repr_pos = ('field_1', 'field_3')
 
     obj = Cls()
     obj.field_1 = 3
@@ -35,8 +35,8 @@ def test_multiple_positional_fields() -> None:
 
 def test_single_keyword_field() -> None:
     class Cls(Representable):
-        repr_keyword_fields = 'field'
         field: str
+        pgx_repr_kw = 'field'
 
     obj = Cls()
     obj.field = 'val'
@@ -46,10 +46,10 @@ def test_single_keyword_field() -> None:
 
 def test_multiple_keyword_fields() -> None:
     class Cls(Representable):
-        repr_keyword_fields = ('field_1', 'field_3')
         field_1: int
         field_2: bool
         field_3: list[str]
+        pgx_repr_kw = ('field_1', 'field_3')
 
     obj = Cls()
     obj.field_1 = 3
@@ -60,11 +60,11 @@ def test_multiple_keyword_fields() -> None:
 
 def test_both_positional_and_keyword_fields() -> None:
     class Cls(Representable):
-        repr_keyword_fields = ['field_3', 'field_1']
-        repr_positional_fields = ['field_2']
         field_1: int
         field_2: bool
         field_3: list[str]
+        pgx_repr_kw = ['field_3', 'field_1']
+        pgx_repr_pos = ['field_2']
 
     obj = Cls()
     obj.field_1 = 3
@@ -76,7 +76,7 @@ def test_both_positional_and_keyword_fields() -> None:
 
 def test_missing_positional_field() -> None:
     class Cls(Representable):
-        repr_positional_fields = 'field'
+        pgx_repr_pos = 'field'
         field: str
 
     obj = Cls()
@@ -86,8 +86,8 @@ def test_missing_positional_field() -> None:
 
 def test_missing_keyword_field() -> None:
     class Cls(Representable):
-        repr_keyword_fields = 'field'
         field: str
+        pgx_repr_kw = 'field'
 
     obj = Cls()
 

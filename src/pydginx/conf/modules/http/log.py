@@ -9,4 +9,4 @@ from .core import HTTP, Server
 
 
 class AccessLog(SingleValueDataClassDirective[str | Path | OffType]):
-    context = HTTP, Server
+    pgx_context = HTTP, Server

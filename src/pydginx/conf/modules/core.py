@@ -11,39 +11,38 @@ from pydginx.conf.literals import AutoType, BoolType
 
 
 class Events(Block):
-    context = MainContext
+    pgx_context = MainContext
 
 
 class AcceptMutex(SingleValueDataClassDirective[BoolType]):
-    context = Events
+    pgx_context = Events
 
 
 class Daemon(SingleValueDataClassDirective[BoolType]):
-    context = MainContext
+    pgx_context = MainContext
 
 
 class Env(DataClassDirective):
-    context = MainContext
-    unique = False
-
-    repr_positional_fields = ['_repr']
-
-    variable: str
+    name: str
     value: str | None = None
 
+    pgx_context = MainContext
+    pgx_unique = False
+    pgx_repr_pos = ['_repr']
+
     def __post_init__(self) -> None:
-        variable, sep, value = self.variable.partition('=')
+        variable, sep, value = self.name.partition('=')
         if sep:
             if self.value is not None:
                 raise TypeError(
                     'one argument expected when VARIABLE=value syntax is used')
-            self.variable = variable
+            self.name = variable
             self.value = value
 
     def render_parameters(self) -> str:
         if self.value is None:
-            return self.variable
-        return f'{self.variable}={maybe_escape_string(self.value)}'
+            return self.name
+        return f'{self.name}={maybe_escape_string(self.value)}'
 
     @property
     def _repr(self) -> str:
@@ -51,17 +50,17 @@ class Env(DataClassDirective):
 
 
 class Include(SingleValueDataClassDirective[str | Path]):
-    context = AnyContext
-    unique = False
+    pgx_context = AnyContext
+    pgx_unique = False
 
 
 class PID(SingleValueDataClassDirective[str | Path]):
-    context = MainContext
+    pgx_context = MainContext
 
 
 class WorkerConnections(SingleValueDataClassDirective[int]):
-    context = Events
+    pgx_context = Events
 
 
 class WorkerProcesses(SingleValueDataClassDirective[int | AutoType]):
-    context = MainContext
+    pgx_context = MainContext

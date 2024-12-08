@@ -12,9 +12,8 @@ class SomeContext(Context):
 
 
 class SomeDirective(Directive):
-    name = 'some_directive'
-    context = SomeContext
-    unique = False
+    pgx_context = SomeContext
+    pgx_unique = False
 
 
 @pytest.fixture
@@ -95,11 +94,11 @@ def test_ilshift(context: SomeContext) -> None:
 
 def test_one_unique_directive(context: SomeContext) -> None:
     class NotUniqueDirective(Directive):
-        context = SomeContext
-        unique = False
+        pgx_context = SomeContext
+        pgx_unique = False
 
     class UniqueDirective(Directive):
-        context = SomeContext
+        pgx_context = SomeContext
 
     context <<= NotUniqueDirective
     context <<= UniqueDirective
@@ -108,12 +107,12 @@ def test_one_unique_directive(context: SomeContext) -> None:
 
 def test_two_same_unique_is_error(context: SomeContext) -> None:
     class UniqueDirective1(Directive):
-        context = SomeContext
-        unique = True
+        pgx_context = SomeContext
+        pgx_unique = True
 
     class UniqueDirective2(Directive):
-        context = SomeContext
-        unique = True
+        pgx_context = SomeContext
+        pgx_unique = True
 
     context <<= UniqueDirective1
     context <<= UniqueDirective2()

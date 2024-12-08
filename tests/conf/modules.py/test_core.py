@@ -8,19 +8,19 @@ class TestEnv:
     def test_only_name(self):
         env = Env('VAR')
 
-        assert env.variable == 'VAR'
+        assert env.name == 'VAR'
         assert env.value is None
 
     def test_name_value_two_arguments(self):
         env = Env('VAR', 'value')
 
-        assert env.variable == 'VAR'
+        assert env.name == 'VAR'
         assert env.value == 'value'
 
     def test_name_value_one_argument(self):
         env = Env('VAR=value')
 
-        assert env.variable == 'VAR'
+        assert env.name == 'VAR'
         assert env.value == 'value'
 
     def test_one_argument_expected(self):

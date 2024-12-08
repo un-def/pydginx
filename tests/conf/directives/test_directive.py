@@ -8,8 +8,8 @@ def test_context_none_by_default() -> None:
     class Dir(Directive):
         pass
 
-    assert isinstance(Dir.allowed_context, frozenset)
-    assert Dir.allowed_context == set()
+    assert isinstance(Dir.pgx_allowed_context, frozenset)
+    assert Dir.pgx_allowed_context == set()
 
 
 def test_context_one_item() -> None:
@@ -17,10 +17,10 @@ def test_context_one_item() -> None:
         pass
 
     class Dir(Directive):
-        context = Ctx
+        pgx_context = Ctx
 
-    assert isinstance(Dir.allowed_context, frozenset)
-    assert Dir.allowed_context == {Ctx}
+    assert isinstance(Dir.pgx_allowed_context, frozenset)
+    assert Dir.pgx_allowed_context == {Ctx}
 
 
 def test_context_two_items() -> None:
@@ -31,17 +31,17 @@ def test_context_two_items() -> None:
         pass
 
     class Dir(Directive):
-        context = Ctx1, Ctx2
+        pgx_context = Ctx1, Ctx2
 
-    assert isinstance(Dir.allowed_context, frozenset)
-    assert Dir.allowed_context == {Ctx1, Ctx2}
+    assert isinstance(Dir.pgx_allowed_context, frozenset)
+    assert Dir.pgx_allowed_context == {Ctx1, Ctx2}
 
 
 def test_context_any() -> None:
     class Dir(Directive):
-        context = AnyContext
+        pgx_context = AnyContext
 
-    assert Dir.allowed_context is AnyContext
+    assert Dir.pgx_allowed_context is AnyContext
 
 
 def test_context_self() -> None:
@@ -49,30 +49,30 @@ def test_context_self() -> None:
         pass
 
     class Dir(Directive, Context):
-        context = Ctx, SelfContext
+        pgx_context = Ctx, SelfContext
 
-    assert isinstance(Dir.allowed_context, frozenset)
-    assert Dir.allowed_context == {Ctx, Dir}
+    assert isinstance(Dir.pgx_allowed_context, frozenset)
+    assert Dir.pgx_allowed_context == {Ctx, Dir}
 
 
 def test_context_self_error_if_is_not_context() -> None:
     with pytest.raises(ValueError, match=r'it is not a Context'):
         class Dir(Directive):  # pyright: ignore[reportUnusedClass]
-            context = SelfContext
+            pgx_context = SelfContext
 
 
 def test_name_auto() -> None:
     class SomeDirective(Directive):
         pass
 
-    assert SomeDirective.name == 'some_directive'
+    assert SomeDirective.pgx_name == 'some_directive'
 
 
 def test_name_provided() -> None:
     class SomeDirective(Directive):
-        name = 'foo'
+        pgx_name = 'foo'
 
-    assert SomeDirective.name == 'foo'
+    assert SomeDirective.pgx_name == 'foo'
 
 
 def test_render_no_parameters_no_name() -> None:
@@ -84,7 +84,7 @@ def test_render_no_parameters_no_name() -> None:
 
 def test_render_witn_parameters_and_name() -> None:
     class SomeDirective(Directive):
-        name = 'foo'
+        pgx_name = 'foo'
 
         def render_parameters(self) -> str:
             return 'bar baz'

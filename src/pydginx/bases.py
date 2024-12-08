@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from collections.abc import Iterator
 from itertools import chain
-from typing import ClassVar, Never, Protocol, Self
+from typing import ClassVar, Never, Self
 
 
 class Singleton:
-    slots = ('_instance',)
+    __slots__ = ('_instance',)
     _instance: ClassVar[Self]
 
     def __new__(cls) -> Self:
@@ -36,26 +36,27 @@ _NOTSET = _NotSet()
 
 
 class Representable:
-    repr_positional_fields: ClassVar[list[str] | tuple[str, ...] | str] = ()
-    repr_keyword_fields: ClassVar[list[str] | tuple[str, ...] | str] = ()
+    pgx_repr_pos: ClassVar[list[str] | tuple[str, ...] | str] = ()
+    pgx_repr_kw: ClassVar[list[str] | tuple[str, ...] | str] = ()
 
     def __repr__(self) -> str:
-        pos_fields = self.repr_positional_fields
+        pos_fields = self.pgx_repr_pos
         if isinstance(pos_fields, str):
             pos_fields = (pos_fields,)
-        kw_fields = self.repr_keyword_fields
+        kw_fields = self.pgx_repr_kw
         if isinstance(kw_fields, str):
             kw_fields = (kw_fields,)
-        name = self.__class__.__name__
         values = ', '.join(chain(
             (repr(getattr(self, f, _NOTSET)) for f in pos_fields),
             (f'{f}={getattr(self, f, _NOTSET)!r}' for f in kw_fields),
         ))
-        return f'{name}({values})'
+        return f'{self.__class__.__name__}({values})'
 
 
-class Renderable(Protocol):
-    DEFAULT_INDENT_WIDTH = 4
+_DEFAULT_INDENT_WIDTH = 4
+
+
+class Renderable:
 
     def __str__(self) -> str:
         return self.render()
@@ -72,7 +73,7 @@ class Renderable(Protocol):
         if not level:
             return ''
         if width is None:
-            width = self.DEFAULT_INDENT_WIDTH
+            width = _DEFAULT_INDENT_WIDTH
         return ' ' * level * width
 
     def render_iter(

@@ -74,12 +74,12 @@ class Context(Representable):
             cls = MainContext
         for directive in directives:
             directive = instantiate(directive)
-            if directive.unique:
+            if directive.pgx_unique:
                 directive_cls = type(directive)
                 if directive_cls in self._unique_directives:
                     raise Duplicate(directive, self)
                 self._unique_directives.add(directive_cls)
-            allowed_context = directive.allowed_context
+            allowed_context = directive.pgx_allowed_context
             if allowed_context is AnyContext or cls in allowed_context:
                 self._directives.append(directive)
             else:

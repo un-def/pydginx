@@ -42,25 +42,25 @@ def is_directive(__obj_or_cls: Any, /) -> TypeGuard[DirectiveType]:
 
 
 class Directive(Renderable, Representable):
-    name: ClassVar[str]
-    context: ClassVar[
+    pgx_name: ClassVar[str]
+    pgx_context: ClassVar[
         type[Context] | list[type[Context]] | tuple[type[Context], ...]] = ()
-    unique: ClassVar[bool] = True
+    pgx_unique: ClassVar[bool] = True
 
     # computed automatically from context class variable
-    allowed_context: ClassVar[frozenset[type[Context]] | type[AnyContext]]
+    pgx_allowed_context: ClassVar[frozenset[type[Context]] | type[AnyContext]]
 
     def __init_subclass__(cls) -> None:
         # see: https://github.com/python/cpython/issues/114326
         super().__init_subclass__()
         try:
-            name = cls.__dict__['name']
+            name = cls.__dict__['pgx_name']
         except KeyError:
             name = to_snake_case(cls.__name__)
-            cls.name = name
-        context = cls.context
+            cls.pgx_name = name
+        context = cls.pgx_context
         if context is AnyContext:
-            cls.allowed_context = AnyContext
+            cls.pgx_allowed_context = AnyContext
         else:
             if isclass(context):
                 context = (context,)
@@ -74,10 +74,10 @@ class Directive(Renderable, Representable):
                         )
                     ctx = cls
                 allowed_context.add(ctx)
-            cls.allowed_context = frozenset(allowed_context)
+            cls.pgx_allowed_context = frozenset(allowed_context)
 
     def render_directive(self) -> str:
-        return self.name
+        return self.pgx_name
 
     def render_parameters(self) -> str | None:
         return None
@@ -104,7 +104,7 @@ class SingletonDirective(Singleton, Directive):
 class SingleValueDataClassDirective[T: ValueType](Directive):
     value: T
 
-    repr_positional_fields = 'value'
+    pgx_repr_pos = 'value'
 
     def render_parameters(self) -> str:
         return render_value(self.value)
