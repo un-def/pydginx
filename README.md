@@ -9,3 +9,7 @@ The project name is a portmanteau of “**Py**thon–N**ginx** pi**dgin**”.
 ## Modules
 
 See [docs/modules.md](https://github.com/un-def/pydginx/blob/master/docs/modules.md)
+
+## Examples
+
+See [examples](https://github.com/un-def/pydginx/tree/master/examples)
