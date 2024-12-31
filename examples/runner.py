@@ -9,11 +9,13 @@ from pathlib import Path
 from types import FrameType
 
 from pydginx.conf.contexts import MainContext
-from pydginx.conf.literals import AUTO, OFF
+from pydginx.conf.literals import AUTO
 from pydginx.conf.modules.core import (
     PID, Daemon, Env, Events, WorkerConnections, WorkerProcesses,
 )
-from pydginx.conf.modules.http.core import HTTP, Server
+from pydginx.conf.modules.http.core import (
+    HTTP, Alias, DefaultType, Internal, Location, Server,
+)
 from pydginx.conf.modules.http.log import AccessLog
 
 
@@ -78,16 +80,26 @@ class Nginx:
 
 nginx = Nginx()
 nginx.conf <<= [
-    Daemon(OFF),
-    PID('./nginx.pid'),
+    Daemon(False),
+    PID('nginx.pid'),
     WorkerProcesses(AUTO),
     Env('TZ'),
     Env('LC_ALL', 'C'),
 ]
 nginx.conf.events <<= WorkerConnections(100)
 nginx.conf.http <<= [
-    Server(),
-    AccessLog(OFF),
+    AccessLog(False),
+    Server(
+        Location('/') << [
+            Alias('./data'),
+        ],
+        Location(exact='/favicon.ico') << [
+            DefaultType('image/vnd.microsoft.icon'),
+        ],
+        Location('/_internal') << [
+            Internal,
+        ],
+    ),
 ]
 
 nginx.run()

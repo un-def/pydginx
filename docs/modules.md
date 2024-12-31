@@ -44,7 +44,7 @@
   * [ ] absolute_redirect
   * [ ] aio
   * [ ] aio_write
-  * [ ] alias
+  * [x] alias
   * [ ] auth_delay
   * [ ] chunked_transfer_encoding
   * [ ] client_body_buffer_size
@@ -56,7 +56,7 @@
   * [ ] client_header_timeout
   * [ ] client_max_body_size
   * [ ] connection_pool_size
-  * [ ] default_type
+  * [x] default_type
   * [ ] directio
   * [ ] directio_alignment
   * [ ] disable_symlinks
@@ -65,7 +65,7 @@
   * [x] http
   * [ ] if_modified_since
   * [ ] ignore_invalid_headers
-  * [ ] internal
+  * [x] internal
   * [ ] keepalive_disable
   * [ ] keepalive_requests
   * [ ] keepalive_time
@@ -78,7 +78,7 @@
   * [ ] lingering_time
   * [ ] lingering_timeout
   * [ ] listen
-  * [ ] location
+  * [x] location
   * [ ] log_not_found
   * [ ] log_subrequest
   * [ ] max_ranges
