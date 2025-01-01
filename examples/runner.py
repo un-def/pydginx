@@ -19,6 +19,7 @@ from pydginx.conf.modules.http.core import (
 from pydginx.conf.modules.http.fastcgi import FastcgiTempPath
 from pydginx.conf.modules.http.log import AccessLog
 from pydginx.conf.modules.http.proxy import ProxyTempPath
+from pydginx.conf.modules.http.rewrite import If, Return
 from pydginx.conf.modules.http.scgi import ScgiTempPath
 from pydginx.conf.modules.http.uwsgi import UwsgiTempPath
 
@@ -100,10 +101,15 @@ nginx.conf.http <<= [
     ScgiTempPath('temp'),
     Server(
         Location('/') << [
-            Alias('./data'),
+            Alias('./data/'),
         ],
         Location(exact='/favicon.ico') << [
             DefaultType('image/vnd.microsoft.icon'),
+        ],
+        Location('/redirect') << Return('https://httpbin.org/get'),
+        Location('/if') << [
+            If('$request_method = GET', Return(405)),
+            Return(200, 'OK!'),
         ],
         Location('/_internal') << [
             Internal,

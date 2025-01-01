@@ -209,3 +209,17 @@
   * [ ] $time_iso8601
   * [ ] $time_local
 </details>
+
+## [ngx_http_rewrite_module](https://nginx.org/en/docs/http/ngx_http_rewrite_module.html)
+
+<details>
+  <summary>Directives</summary>
+
+  * [x] break
+  * [x] if
+  * [x] return
+  * [ ] rewrite
+  * [ ] rewrite_log
+  * [ ] set
+  * [ ] uninitialized_variable_warn
+</details>
