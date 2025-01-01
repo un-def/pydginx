@@ -14,9 +14,13 @@ from pydginx.conf.modules.core import (
     PID, Daemon, Env, Events, WorkerConnections, WorkerProcesses,
 )
 from pydginx.conf.modules.http.core import (
-    HTTP, Alias, DefaultType, Internal, Location, Server,
+    HTTP, Alias, ClientBodyTempPath, DefaultType, Internal, Location, Server,
 )
+from pydginx.conf.modules.http.fastcgi import FastcgiTempPath
 from pydginx.conf.modules.http.log import AccessLog
+from pydginx.conf.modules.http.proxy import ProxyTempPath
+from pydginx.conf.modules.http.scgi import ScgiTempPath
+from pydginx.conf.modules.http.uwsgi import UwsgiTempPath
 
 
 class Conf(MainContext):
@@ -89,6 +93,11 @@ nginx.conf <<= [
 nginx.conf.events <<= WorkerConnections(100)
 nginx.conf.http <<= [
     AccessLog(False),
+    ClientBodyTempPath('temp'),
+    ProxyTempPath('temp'),
+    FastcgiTempPath('temp'),
+    UwsgiTempPath('temp'),
+    ScgiTempPath('temp'),
     Server(
         Location('/') << [
             Alias('./data'),

@@ -50,7 +50,7 @@
   * [ ] client_body_buffer_size
   * [ ] client_body_in_file_only
   * [ ] client_body_in_single_buffer
-  * [ ] client_body_temp_path
+  * [x] client_body_temp_path
   * [ ] client_body_timeout
   * [ ] client_header_buffer_size
   * [ ] client_header_timeout

@@ -11,6 +11,7 @@ from pydginx.utils import to_snake_case
 
 from .contexts import AnyContext, Context, SelfContext
 from .literals import OFF, ON, LiteralEnum
+from .types import PathOrStr
 
 
 type ValueType = str | int | bool | LiteralEnum | Path
@@ -144,3 +145,27 @@ class Block(Context, Directive):
             yield '}\n'
         else:
             yield ' {}\n'
+
+
+class TempPathDirective(Directive):
+    path: PathOrStr
+    levels: list[int]
+
+    def __init__(
+        self, __path: PathOrStr, __level1: int | None = None,
+        __level2: int | None = None, __level3: int | None = None, /,
+    ) -> None:
+        self.path = __path
+        levels: list[int] = []
+        if __level1 is not None:
+            levels.append(__level1)
+        if __level2 is not None:
+            levels.append(__level2)
+        if __level3 is not None:
+            levels.append(__level3)
+        self.levels = levels
+
+    def render_parameters(self) -> str:
+        parts: list[str] = [render_value(self.path)]
+        parts.extend(map(render_value, self.levels))
+        return ' '.join(parts)

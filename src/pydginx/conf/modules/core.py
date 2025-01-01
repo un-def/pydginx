@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-from pathlib import Path
-
 from pydginx.conf.contexts import AnyContext, MainContext
 from pydginx.conf.directives import (
     Block, DataClassDirective, SingleValueDataClassDirective,
     maybe_escape_string,
 )
 from pydginx.conf.literals import AutoType, BoolType
+from pydginx.conf.types import PathOrStr
 
 
 class Events(Block):
@@ -49,12 +48,12 @@ class Env(DataClassDirective):
         return self.render_parameters()
 
 
-class Include(SingleValueDataClassDirective[str | Path]):
+class Include(SingleValueDataClassDirective[PathOrStr]):
     pgx_context = AnyContext
     pgx_unique = False
 
 
-class PID(SingleValueDataClassDirective[str | Path]):
+class PID(SingleValueDataClassDirective[PathOrStr]):
     pgx_context = MainContext
 
 

@@ -6,7 +6,7 @@ from typing import overload
 from pydginx.conf.contexts import MainContext, SelfContext
 from pydginx.conf.directives import (
     Block, DataClassDirective, SingletonDirective,
-    SingleValueDataClassDirective,
+    SingleValueDataClassDirective, TempPathDirective,
 )
 
 
@@ -144,6 +144,10 @@ class Location(Block, DataClassDirective):
 
 class Alias(SingleValueDataClassDirective[str]):
     pgx_context = Location
+
+
+class ClientBodyTempPath(TempPathDirective):
+    pgx_context = HTTP, Server, Location
 
 
 class DefaultType(SingleValueDataClassDirective[str]):
